@@ -1,0 +1,26 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+
+<html lang='en'>
+    <head>
+        <meta charset='UTF-8' http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+        <link rel='stylesheet' type='text/css' href='{% static "css/bootstrap.min.css" %}'>
+        <link rel='stylesheet' type='text/css' href='{% static "css/style.css" %}'>
+        <title>{{title}}</title>
+    </head>
+    <body>
+        <div class='login'>
+            {% if success %}
+            <div align='center' class='alert alert-warning'>{{ success }}</div>
+            {% endif %}
+            <h1>JATAYU</h1>
+            <form action='/loginPage/' method='post'>
+                {% csrf_token %}
+                {{ form }}
+                <!-- <input type='text' name='url_text' placeholder='Enter URL' required='required'> -->
+                <input type='submit' value='Connect' class='btn btn-primary btn-block btn-large' />
+                <button class='btn btn-primary btn-block btn-large'>Search Devices</button>
+            </form>
+        </div>
+    </body>
+</html>
