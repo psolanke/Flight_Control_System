@@ -3,15 +3,15 @@ from django.shortcuts import render
 from django.views import View
 from .forms import NameForm
 import requests
+import json
 from . import strings
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
 class LoginPage(APIView):
     def post(self, request):
-        # form = NameForm(request.POST)
-        # if form.is_valid():
-        print(type(request.POST))
+        
+        url = json.loads(request.body.decode('utf-8'))['url']
         #     response_dict = self.connect(form.cleaned_data['url'])
         #     if response_dict[strings.SUCCESS_KEY] == True:
         #         request.session['url'] = form.cleaned_data['url']
@@ -35,6 +35,9 @@ class LoginPage(APIView):
     #         strings.SUCCESS_KEY : success
     #     }
     #     return render(request, strings.LOGINPAGE_TEMPLATE, context)
+
+    def get(self, request):
+        print('Reached Here')
 
     def connect(self, url):
         try:
