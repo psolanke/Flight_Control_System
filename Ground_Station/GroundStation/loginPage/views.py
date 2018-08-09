@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views import View
+from django.http import JsonResponse
 from .forms import NameForm
 import requests
 import json
@@ -12,32 +13,21 @@ class LoginPage(APIView):
     def post(self, request):
         
         url = json.loads(request.body.decode('utf-8'))['url']
-        #     response_dict = self.connect(form.cleaned_data['url'])
-        #     if response_dict[strings.SUCCESS_KEY] == True:
-        #         request.session['url'] = form.cleaned_data['url']
-        #         request.session['is_connected'] = True
-        #         request.session['global_namespace'] = response_dict['param_info']['param_value']
-        #         return HttpResponseRedirect('/gs')
-        # success = strings.CONNECTION_ERROR_MESSAGE            
-        # context = {
-        #     strings.FORM_KEY : form,
-        #     strings.TITLE_KEY : strings.LOGIN_PAGE_TITLE,
-        #     strings.SUCCESS_KEY : success
-        # }
-        # return Response(context)
-        # return render(request, strings.LOGINPAGE_TEMPLATE, context)
-    # def get(self, request):
-    #     form = NameForm()
-    #     success = None
-    #     context = {
-    #         strings.FORM_KEY : form,
-    #         strings.TITLE_KEY : strings.LOGIN_PAGE_TITLE,
-    #         strings.SUCCESS_KEY : success
-    #     }
-    #     return render(request, strings.LOGINPAGE_TEMPLATE, context)
-
-    def get(self, request):
-        print('Reached Here')
+        response_dict = self.connect(url)
+        if response_dict[strings.SUCCESS_KEY] == True:
+            request.session['url'] = url
+            request.session['is_connected'] = True
+            global_namespace = response_dict['param_info']['param_value']
+            request.session['global_namespace'] = global_namespace
+            success = True
+        else:
+            success = False
+            global_namespace = ''
+        response = {
+            strings.GLOBAL_NAMESPACE_RESPONSE_KEY : global_namespace,
+            strings.SUCCESS_KEY : success
+        }
+        return JsonResponse(response)
 
     def connect(self, url):
         try:
