@@ -1,9 +1,9 @@
 import React from 'react';
-
+import '../css/App.css';
 const withErrorHandling = WrappedComponent => ({ showError, children }) => {
   return (
     <WrappedComponent>
-      {showError && <div className="error-message">Oops! Something went wrong!</div>}
+      {showError && <div className="App-error">Couldn't Connect!</div>}
       {children}
     </WrappedComponent>
   );
@@ -11,24 +11,4 @@ const withErrorHandling = WrappedComponent => ({ showError, children }) => {
 
 const DivWithErrorHandling = withErrorHandling(({children}) => <div>{children}</div>)
 
-
-class App extends React.Component {
-  state = { showError: true }
-  
-  toggleError = () => {
-    this.setState((prevState, props) => {
-      return { showError: !prevState.showError }
-    })
-  };
-  
-  render() {
-    return (
-      <DivWithErrorHandling showError={this.state.showError}>
-        <h1>Your Amazing Content</h1>
-        <button onClick={this.toggleError}>
-           Toggle Error
-        </button>
-      </DivWithErrorHandling>
-    );
-  }
-}
+export default DivWithErrorHandling;

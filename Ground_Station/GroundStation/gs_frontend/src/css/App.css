@@ -26,3 +26,11 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.App-error{
+  text-align: center;
+  background-color: #ff7272;
+  color: white;
+  /*padding: 1em;*/
+  border-radius: 5px;
+}

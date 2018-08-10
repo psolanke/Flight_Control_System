@@ -3,12 +3,14 @@ import axios from'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Cookies from 'js-cookie';
 import '../css/App.css';
+import DivWithErrorHandling from './ErrorComponent';
 
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       'value': '',
+      'showError': null,
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -20,7 +22,8 @@ class LoginForm extends React.Component {
 
   handleSubmit(event) {
 
-    var csrfToken = Cookies.get('csrftoken');
+    let csrfToken = Cookies.get('csrftoken');
+    console.log(csrfToken);
     let headers = {
       'headers' : {
         'X-CSRFToken' : csrfToken,
@@ -30,12 +33,21 @@ class LoginForm extends React.Component {
     let payload = {
       'url': this.state.value,
     };
-    console.log(axios.post('http://127.0.0.1:8000/loginPage/',payload,headers));
+    axios.post('http://127.0.0.1:8000/loginPage/',payload,headers)
+      .then(
+        response => {
+          this.setState({
+           'showError': !response.data['success'],
+          });
+        }
+    );
+    // console.log(axios.post('http://127.0.0.1:8000/loginPage/',payload,headers));
     event.preventDefault();
 
   }
 
   render() {
+    console.log(this.state.showError);
     return (
       <div className='container'>
         <div className='card card-container'>
@@ -43,6 +55,7 @@ class LoginForm extends React.Component {
             className='form-signin'
             onSubmit={this.handleSubmit}
             >
+              <DivWithErrorHandling showError={this.state.showError}>
               <p
               id='profile-name' 
               className='profile-name-card'
@@ -69,6 +82,7 @@ class LoginForm extends React.Component {
               >
                 Search Devices
               </button>
+            </DivWithErrorHandling>
             </form>
         </div>
     </div>
