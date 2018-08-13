@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Cookies from 'js-cookie';
 import '../css/App.css';
 import DivWithErrorHandling from './ErrorComponent';
+import { Redirect } from 'react-router'
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -11,6 +12,7 @@ class LoginForm extends React.Component {
     this.state = {
       'value': '',
       'showError': null,
+      'toMainPage': null,
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -38,6 +40,7 @@ class LoginForm extends React.Component {
         response => {
           this.setState({
            'showError': !response.data['success'],
+           'toMainPage': response.data['success'],
           });
         }
     );
@@ -48,6 +51,9 @@ class LoginForm extends React.Component {
 
   render() {
     console.log(this.state.showError);
+    if (this.state.toMainPage === true) {
+      return <Redirect to='/mainPage' />
+    }
     return (
       <div className='container'>
         <div className='card card-container'>
