@@ -1,3 +1,5 @@
+import sys 
+sys.path.append('../')
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views import View
@@ -5,13 +7,12 @@ from django.http import JsonResponse
 from .forms import NameForm
 import requests
 import json
-from . import strings
+import strings
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
 class LoginPage(APIView):
     def post(self, request):
-        
         url = json.loads(request.body.decode('utf-8'))['url']
         response_dict = self.connect(url)
         if response_dict[strings.SUCCESS_KEY] == True:
@@ -23,6 +24,7 @@ class LoginPage(APIView):
         else:
             success = False
             global_namespace = ''
+        print(success)
         response = {
             strings.GLOBAL_NAMESPACE_RESPONSE_KEY : global_namespace,
             strings.SUCCESS_KEY : success
@@ -30,8 +32,9 @@ class LoginPage(APIView):
         return JsonResponse(response)
 
     def connect(self, url):
+        print(strings.GLOBAL_NAMESPACE_API_URL.format(url))
         try:
-            response = requests.get(strings.GLOBAL_NAMESPACE_URL.format(url))
+            response = requests.get(strings.GLOBAL_NAMESPACE_API_URL.format(url))
             response_dict = response.json()
         except:
             response_dict = {strings.SUCCESS_KEY : False}

@@ -44,7 +44,6 @@ class LoginForm extends React.Component {
           });
         }
     );
-    // console.log(axios.post('http://127.0.0.1:8000/loginPage/',payload,headers));
     event.preventDefault();
 
   }
@@ -91,7 +90,7 @@ class LoginForm extends React.Component {
             </DivWithErrorHandling>
             </form>
         </div>
-    </div>
+      </div>
     );
   }
 }

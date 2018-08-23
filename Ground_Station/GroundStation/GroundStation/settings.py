@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'gs_landing_page.apps.GsLandingPageConfig',
+    'backend.apps.BackendConfig',
     'loginPage.apps.LoginpageConfig',
     'django.contrib.admin',
     'django.contrib.auth',
